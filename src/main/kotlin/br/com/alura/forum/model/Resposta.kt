@@ -1,13 +1,17 @@
 package br.com.alura.forum.model
 
-import br.com.alura.forum.dto.TopicoView
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
+@Entity
 data class Resposta(
-    var id: Long? =null,
-    var mensagem: String,
-    val dataCriacao: LocalDateTime = LocalDateTime.now(),
-    val autor: Usuario,
-    val topico: TopicoView,
-    var solucao: Boolean = false
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        val id: Long? = null,
+        val mensagem: String,
+        val dataCriacao: LocalDateTime = LocalDateTime.now(),
+        @ManyToOne
+        val autor: Usuario,
+        @ManyToOne
+        val topico: Topico,
+        val solucao: Boolean
 )
