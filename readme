@@ -1,0 +1,93 @@
+# Forum API
+
+A REST API for forum management built with Kotlin and Spring Boot.
+
+## Features
+
+- JWT Authentication
+- Role-based authorization
+- RESTful endpoints for topics and responses
+- Documentation with Swagger UI
+- Database migrations with Flyway
+- Redis caching
+
+## Tech Stack
+
+- Kotlin
+- Spring Boot
+- Spring Security
+- MySQL
+- Redis
+- Flyway
+
+## Setup
+
+### Prerequisites
+
+- JDK 11+
+- Maven
+- MySQL
+- Redis
+
+### Database
+
+The application uses Flyway to manage database migrations. The database schema includes:
+- Users (`usuario`)
+- Topics (`topico`)
+- Responses (`resposta`)
+- Courses (`curso`)
+
+### Configuration
+
+Configuration files are available for different environments:
+- `application.yml` - General settings
+- `application-dev.yml` - Development environment
+- `application-prod.yml` - Production environment
+
+## Running the Application
+
+```bash
+# Development
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Production
+mvn spring-boot:run -Dspring-boot.run.profiles=prod
+```
+
+## Authentication
+
+The API uses JWT-based authentication:
+
+1. Obtain a token:
+   ```
+   POST /login
+   {"username":"ana@email.com", "password":"123456"}
+   ```
+
+2. Use the token in subsequent requests:
+   ```
+   Authorization: Bearer <your_token>
+   ```
+
+## API Documentation
+
+Swagger UI documentation is available at:
+```
+GET /swagger-ui/
+```
+
+## Authorization
+
+The API uses role-based authorization:
+- Public endpoints: `/login`, Swagger documentation
+- Protected endpoints: Require `LEITURA_ESCRITA` authority
+
+## Default Users
+
+- Email: ana@email.com
+- Password: 123456
+- Role: LEITURA_ESCRITA
+
+## Port
+
+The application runs on port 8081 by default.

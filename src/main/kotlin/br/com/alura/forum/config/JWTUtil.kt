@@ -1,25 +1,28 @@
 package br.com.alura.forum.config
 
+import br.com.alura.forum.service.UsuarioService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Component
 import java.util.*
 import java.lang.IllegalArgumentException
 
 
 @Component
-class JWTUtil {
-    private val expiration: Long = 60_000
+class JWTUtil(private val usuarioService: UsuarioService){
+    private val expiration: Long = 3600_000
 
     @Value("\${jwt.secret}")
     private lateinit var secret: String
 
-    fun generateToken(username: String): String?{
+    fun generateToken(username: String, authorities: MutableCollection<out GrantedAuthority>): String?{
         return Jwts.builder()
             .setSubject(username)
+            .claim("role", authorities)
             .setExpiration(Date(System.currentTimeMillis() + expiration))
             .signWith(SignatureAlgorithm.HS512, secret.toByteArray())
             .compact()
@@ -35,7 +38,9 @@ class JWTUtil {
     }
 
     fun getAuthentication(jwt: String?): Authentication {
-        val username = Jwts.parser().setSigningKey(secret.toByteArray()).parseClaimsJws(jwt).body.subject
-        return UsernamePasswordAuthenticationToken(username, null, null)
+        val claims = Jwts.parser().setSigningKey(secret.toByteArray()).parseClaimsJws(jwt).body
+        val username = claims.subject
+        val user = usuarioService.loadUserByUsername(username)
+        return UsernamePasswordAuthenticationToken(username, null, user.authorities)
     }
 }

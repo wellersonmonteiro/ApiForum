@@ -5,6 +5,8 @@ import br.com.alura.forum.dto.NovoTopicoForm
 import br.com.alura.forum.dto.TopicoPorCategoriaDto
 import br.com.alura.forum.dto.TopicoView
 import br.com.alura.forum.service.TopicoService
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.security.SecurityScheme
 import jakarta.validation.Valid
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 
 @RestController
+@SecurityRequirement(name =  "baererAuth")
 @RequestMapping("/topicos")
 class TopicoController(private val service: TopicoService) {
 

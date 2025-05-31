@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
+@Table(name = "usuario")
 data class Usuario(
 
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -27,8 +27,11 @@ class SecurityConfiguration (
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
+                    .requestMatchers("/topicos").hasAuthority("LEITURA_ESCRITA")
                     .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                    .anyRequest().authenticated()
+                    .requestMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
+                    .anyRequest().hasAuthority("LEITURA_ESCRITA")
             }
             .addFilterBefore(JWTLoginFilter(authenticationManager = configuration.authenticationManager, jwtUtil = jwtUtil), UsernamePasswordAuthenticationFilter::class.java)
             .addFilterBefore(JWTAuthenticationFilter(jwtUtil = jwtUtil), UsernamePasswordAuthenticationFilter::class.java)

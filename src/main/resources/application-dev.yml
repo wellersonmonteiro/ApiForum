@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/forum
+    username: root
+    password: nova_senha
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  flyway:  # MOVED UNDER spring namespace
+    enabled: true
+    baseline-on-migrate: true
+    schemas: forum
+    locations: classpath:db/migration
+jwt:
+  secret: secret
+server:
+  port: 8081
